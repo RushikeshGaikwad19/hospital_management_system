@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System - Folder Structure</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and background */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #3E8E41;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        /* Folder structure list */
+        .folder-structure {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .folder {
+            color: #fff;
+            background-color: #4CAF50;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .sub-folder {
+            margin-left: 30px;
+            color: #2196F3;
+        }
+
+        .file {
+            margin-left: 50px;
+            color: #555;
+        }
+
+        .file:hover {
+            color: #4CAF50;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #555;
+            background-color: #4CAF50;
+            margin-top: 30px;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Hospital Management System Folder Structure</h1>
+
+    <div class="folder-structure">
+        <h2>Project Folder:</h2>
+        <ul>
+            <li>
+                <span class="folder">hospital_management_system</span>
+                <ul>
+                    <li>
+                        <span class="folder">src</span>
+                        <ul>
+                            <li>
+                                <span class="folder">hospital</span>
+                                <ul>
+                                    <li class="file">App.java</li>
+                                    <li class="file">Doctor.java</li>
+                                    <li class="file">Patient.java</li>
+                                    <li class="file">Appointment.java</li>
+                                    <li class="file">Bill.java</li>
+                                    <li class="file">DatabaseConnection.java</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="folder">bin</span>
+                    </li>
+                    <li>
+                        <span class="folder">lib</span>
+                        <ul>
+                            <li class="file">mysql-connector-java-8.x.x.jar</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="folder">docs</span>
+                        <ul>
+                            <li class="file">project_report.pdf</li>
+                            <li class="file">design_document.pdf</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="folder">resources</span>
+                        <ul>
+                            <li class="file">database_schema.sql</li>
+                            <li class="file">setup_instructions.txt</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Hospital Management System | Created by <a href="https://www.example.com">Your Name</a></p>
+    </footer>
+</body>
+
+</html>

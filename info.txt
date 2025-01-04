@@ -1,0 +1,575 @@
+i have this file give me InputHelper.java file MedicalRecord.java file bill service.java file MedicalRecordService.java file and Main.java file 
+do not make any mistake code should run
+below the my folder structure give me 
+HospitalManagementSystem/
+│
+├── src/
+│   ├── config/
+│   │   └── DatabaseConnection.java       # Database connection setup
+│   ├── dao/
+│   │   ├── PatientDAO.java               # Data access logic for patients
+│   │   ├── DoctorDAO.java                # Data access logic for doctors
+│   │   ├── AppointmentDAO.java           # Data access logic for 
+│   │   ├── BillDAO.java                  # Data access logic for bills
+│   │   └── MedicalRecordDAO.java         # Data access logic for medical 
+│   ├── model/
+│   │   ├── Patient.java                  # Patient model
+│   │   ├── Doctor.java                   # Doctor model
+│   │   ├── Appointment.java              # Appointment model
+│   │   ├── Bill.java                     # Bill model
+│   │   └── MedicalRecord.java            # Medical record model
+│   ├── service/
+│   │   ├── PatientService.java           # Logic to handle patient-related 
+│   │   ├── DoctorService.java            
+│   │   ├── AppointmentService.java      
+│   │   ├── BillService.java              # Logic to handle billing and payments
+│   │   └── MedicalRecordService.java     # Logic to handle medical records
+│   ├── ui/
+│   │   └── MainApp.java                  # Main entry point for the application 
+│   └── util/
+│       └── InputHelper.java    package config; 
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/hospital_management_system";
+    private static final String USER = "root";
+    private static final String PASSWORD = "Rushi123@#";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
+package dao;
+
+import config.DatabaseConnection;
+import model1.Appointment;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AppointmentDAO {
+    public void addAppointment(Appointment appointment) throws SQLException {
+        String sql = "INSERT INTO appointments (patient_id, doctor_id, date, time) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, appointment.getPatientId());
+            stmt.setInt(2, appointment.getDoctorId());
+            stmt.setString(3, appointment.getDate());
+            stmt.setString(4, appointment.getTime());
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<Appointment> getAllAppointments() throws SQLException {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = "SELECT * FROM appointments";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                appointments.add(new Appointment(
+                        rs.getInt("id"),
+                        rs.getInt("patient_id"),
+                        rs.getInt("doctor_id"),
+                        rs.getString("date"),
+                        rs.getString("time")
+                ));
+            }
+        }
+        return appointments;
+    }
+
+    public Appointment getAppointmentById(int id) throws SQLException {
+        String sql = "SELECT * FROM appointments WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Appointment(
+                        rs.getInt("id"),
+                        rs.getInt("patient_id"),
+                        rs.getInt("doctor_id"),
+                        rs.getString("date"),
+                        rs.getString("time")
+                );
+            }
+        }
+        return null;
+    }
+
+    public void updateAppointment(Appointment appointment) throws SQLException {
+        String sql = "UPDATE appointments SET patient_id = ?, doctor_id = ?, date = ?, time = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, appointment.getPatientId());
+            stmt.setInt(2, appointment.getDoctorId());
+            stmt.setString(3, appointment.getDate());
+            stmt.setString(4, appointment.getTime());
+            stmt.setInt(5, appointment.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void deleteAppointment(int id) throws SQLException {
+        String sql = "DELETE FROM appointments WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+package dao;
+
+import config.DatabaseConnection;
+import model1.Bill;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BillDAO {
+    public void addBill(Bill bill) throws SQLException {
+        String sql = "INSERT INTO bills (patient_id, amount, date) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bill.getPatientId());
+            stmt.setDouble(2, bill.getAmount());
+            stmt.setString(3, bill.getDate());
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<Bill> getAllBills() throws SQLException {
+        List<Bill> bills = new ArrayList<>();
+        String sql = "SELECT * FROM bills";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                bills.add(new Bill(
+                        rs.getInt("id"),
+                        rs.getInt("patient_id"),
+                        rs.getDouble("amount"),
+                        rs.getString("date")
+                ));
+            }
+        }
+        return bills;
+    }
+
+    public Bill getBillById(int id) throws SQLException {
+        String sql = "SELECT * FROM bills WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Bill(
+                        rs.getInt("id"),
+                        rs.getInt("patient_id"),
+                        rs.getDouble("amount"),
+                        rs.getString("date")
+                );
+            }
+        }
+        return null;
+    }
+
+    public void updateBill(Bill bill) throws SQLException {
+        String sql = "UPDATE bills SET patient_id = ?, amount = ?, date = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bill.getPatientId());
+            stmt.setDouble(2, bill.getAmount());
+            stmt.setString(3, bill.getDate());
+            stmt.setInt(4, bill.getId());
+            stmt.executeUpdate();
+        }
+    }
+} 
+package dao;
+
+import config.DatabaseConnection;
+import model1.Doctor;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DoctorDAO {
+    public void addDoctor(Doctor doctor) throws SQLException {
+        String sql = "INSERT INTO doctors (name, specialization, contact) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, doctor.getName());
+            stmt.setString(2, doctor.getSpecialization());
+            stmt.setString(3, doctor.getContact());
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<Doctor> getAllDoctors() throws SQLException {
+        List<Doctor> doctors = new ArrayList<>();
+        String sql = "SELECT * FROM doctors";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                doctors.add(new Doctor(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("specialization"),
+                        rs.getString("contact")
+                ));
+            }
+        }
+        return doctors;
+    }
+
+    public Doctor getDoctorById(int id) throws SQLException {
+        String sql = "SELECT * FROM doctors WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Doctor(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("specialization"),
+                        rs.getString("contact")
+                );
+            }
+        }
+        return null;
+    }
+
+    public void updateDoctor(Doctor doctor) throws SQLException {
+        String sql = "UPDATE doctors SET name = ?, specialization = ?, contact = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, doctor.getName());
+            stmt.setString(2, doctor.getSpecialization());
+            stmt.setString(3, doctor.getContact());
+            stmt.setInt(4, doctor.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void deleteDoctor(int id) throws SQLException {
+        String sql = "DELETE FROM doctors WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+package dao;
+
+import config.DatabaseConnection;
+import model1.Patient;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PatientDAO {
+    public void addPatient(Patient patient) throws SQLException {
+        String sql = "INSERT INTO patients (name, age, address, contact) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, patient.getName());
+            stmt.setInt(2, patient.getAge());
+            stmt.setString(3, patient.getAddress());
+            stmt.setString(4, patient.getContact());
+            stmt.executeUpdate();
+        }
+    }
+package model1;
+
+public class Bill {
+    private int id;
+    private int patientId;
+    private double amount;
+    private String date;
+
+    public Bill(int id, int patientId, double amount, String date) {
+        this.id = id;
+        this.patientId = patientId;
+        this.amount = amount;
+        this.date = date;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public int getPatientId() { return patientId; }
+    public void setPatientId(int patientId) { this.patientId = patientId; }
+
+    public double getAmount() { return amount; }
+    public void setAmount(double amount) { this.amount = amount; }
+
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
+}
+ package model1;
+
+public class Doctor {
+    private int id;
+    private String name;
+    private String specialization;
+    private String contact;
+
+    public Doctor(int id, String name, String specialization, String contact) {
+        this.id = id;
+        this.name = name;
+        this.specialization = specialization;
+        this.contact = contact;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getSpecialization() { return specialization; }
+    public void setSpecialization(String specialization) { this.specialization = specialization; }
+
+    public String getContact() { return contact; }
+    public void setContact(String contact) { this.contact = contact; }
+}
+
+
+
+    public List<Patient> getAllPatients() throws SQLException {
+        List<Patient> patients = new ArrayList<>();
+        String sql = "SELECT * FROM patients";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                patients.add(new Patient(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("age"),
+                        rs.getString("address"),
+                        rs.getString("contact")
+                ));
+            }
+        }
+        return patients;
+    }
+
+    public Patient getPatientById(int id) throws SQLException {
+        String sql = "SELECT * FROM patients WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Patient(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("age"),
+                        rs.getString("address"),
+                        rs.getString("contact")
+                );
+            }
+        }
+        return null;
+    }
+
+    public void updatePatient(Patient patient) throws SQLException {
+        String sql = "UPDATE patients SET name = ?, age = ?, address = ?, contact = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, patient.getName());
+            stmt.setInt(2, patient.getAge());
+            stmt.setString(3, patient.getAddress());
+            stmt.setString(4, patient.getContact());
+            stmt.setInt(5, patient.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void deletePatient(int id) throws SQLException {
+        String sql = "DELETE FROM patients WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+package service;
+
+import dao.AppointmentDAO;
+import model1.Appointment;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public class AppointmentService {
+    private final AppointmentDAO appointmentDAO = new AppointmentDAO();
+
+    public void addAppointment(Appointment appointment) throws SQLException {
+        appointmentDAO.addAppointment(appointment);
+    }
+
+    public List<Appointment> getAllAppointments() throws SQLException {
+        return appointmentDAO.getAllAppointments();
+    }
+
+    public Appointment getAppointmentById(int id) throws SQLException {
+        return appointmentDAO.getAppointmentById(id);
+    }
+
+    public void updateAppointment(Appointment appointment) throws SQLException {
+        appointmentDAO.updateAppointment(appointment);
+    }
+
+    public void deleteAppointment(int id) throws SQLException {
+        appointmentDAO.deleteAppointment(id);
+    }
+}package model1; 
+
+public class Appointment {
+    private int id;
+    private int patientId;
+    private int doctorId;
+    private String date;
+    private String time;
+
+    public Appointment(int id, int patientId, int doctorId, String date, String time) {
+        this.id = id;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.date = date;
+        this.time = time;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public int getPatientId() { return patientId; }
+    public void setPatientId(int patientId) { this.patientId = patientId; }
+
+    public int getDoctorId() { return doctorId; }
+    public void setDoctorId(int doctorId) { this.doctorId = doctorId; }
+
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
+
+    public String getTime() { return time; }
+    public void setTime(String time) { this.time = time; }
+}
+
+
+package model1;
+
+public class Patient {
+    private int id;
+    private String name;
+    private int age;
+    private String address;
+    private String contact;
+
+    public Patient(int id, String name, int age, String address, String contact) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.contact = contact;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    public String getContact() { return contact; }
+    public void setContact(String contact) { this.contact = contact; }
+}
+
+
+package service;
+
+import dao.DoctorDAO;
+import model1.Doctor;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public class DoctorService {
+    private final DoctorDAO doctorDAO = new DoctorDAO();
+
+    public void addDoctor(Doctor doctor) throws SQLException {
+        doctorDAO.addDoctor(doctor);
+    }
+
+    public List<Doctor> getAllDoctors() throws SQLException {
+        return doctorDAO.getAllDoctors();
+    }
+
+    public Doctor getDoctorById(int id) throws SQLException {
+        return doctorDAO.getDoctorById(id);
+    }
+
+    public void updateDoctor(Doctor doctor) throws SQLException {
+        doctorDAO.updateDoctor(doctor);
+    }
+
+    public void deleteDoctor(int id) throws SQLException {
+        doctorDAO.deleteDoctor(id);
+    }
+} 
+package service;
+
+import dao.PatientDAO;
+import model1.Patient;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public class PatientService {
+    private final PatientDAO patientDAO = new PatientDAO();
+
+    public void addPatient(Patient patient) throws SQLException {
+        patientDAO.addPatient(patient);
+    }
+
+    public List<Patient> getAllPatients() throws SQLException {
+        return patientDAO.getAllPatients();
+    }
+
+    public Patient getPatientById(int id) throws SQLException {
+        return patientDAO.getPatientById(id);
+    }
+
+    public void updatePatient(Patient patient) throws SQLException {
+        patientDAO.updatePatient(patient);
+    }
+
+    public void deletePatient(int id) throws SQLException {
+        patientDAO.deletePatient(id);
+    }
+}

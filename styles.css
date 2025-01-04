@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #101820, #262626); /* Dark gradient with no white */
+    color: #e6e6e6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(to right, #1f2933, #606c76); /* Slate gradients */
+}
+.nav-link {
+    color: #ffea00 !important; /* Yellow */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+.nav-link:hover {
+    color: #ccff33 !important; /* Lime green hover */
+}
+
+/* Project Info Section */
+#project-info {
+    background: linear-gradient(to bottom, #8e44ad, #34495e); /* Violet to dark blue */
+    color: #ffffff;
+    padding: 50px 0;
+}
+#project-info h2 {
+    color: #f39c12; /* Orange */
+    font-size: 2.5rem;
+}
+
+/* Features Section */
+#features {
+    background: linear-gradient(to right, #28a745, #17a2b8); /* Green to teal */
+    color: #ffffff;
+    padding: 50px 0;
+}
+.card {
+    background: linear-gradient(to bottom right, #d35400, #e74c3c); /* Orange to red */
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.card-title {
+    color: #27ae60; /* Emerald */
+    font-weight: bold;
+}
+.card-text {
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+/* Screenshots Section */
+#screenshots {
+    background: linear-gradient(to bottom, #9b59b6, #e74c3c); /* Purple to red */
+    color: #ffffff;
+    padding: 50px 0;
+}
+img {
+    border: 5px solid #16a085; /* Aqua border */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Contact Section */
+#contact {
+    background: linear-gradient(to bottom, #2980b9, #2c3e50); /* Blue to navy */
+    color: #ffffff;
+    padding: 50px 0;
+}
+a {
+    color: #f1c40f; /* Yellow */
+    font-weight: bold;
+}
+a:hover {
+    color: #2ecc71; /* Green hover */
+}
+
+.contact-form-wrapper {
+    background: linear-gradient(to bottom left, #8e44ad, #c0392b); /* Violet to red */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.form-control {
+    border: 2px solid #f39c12; /* Orange border */
+    background-color: #333333; /* Dark input background */
+    color: #ffffff;
+}
+.form-control:focus {
+    border-color: #27ae60; /* Green on focus */
+    outline: none;
+    box-shadow: 0 0 5px #27ae60;
+}
+button[type="submit"] {
+    background: linear-gradient(to right, #f39c12, #d35400); /* Orange gradient */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+button[type="submit"]:hover {
+    background: linear-gradient(to left, #d35400, #f39c12); /* Reverse gradient */
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(to top, #2c3e50, #1abc9c); /* Teal gradients */
+    color: #ffffff;
+    padding: 20px 0;
+}
+footer p {
+    font-size: 1rem;
+    margin: 0;
+}
